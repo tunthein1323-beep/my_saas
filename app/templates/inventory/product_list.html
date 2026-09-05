@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory List</title>
+    <style>
+        .clickable-row a:hover { background-color: lightblue; cursor: pointer};
+    </style>
+</head>
+<body>
+    <h1>Inventory List</h1>
+    <a href="{% url 'product_create' %}" style="color: green;">Add New Product</a>
+    <a href="{% url 'home' %}" style="color: blueviolet; margin: 20px;">Home</a>
+    
+    <!-- Added a temporary border so you can see if the table grid layout works -->
+    <table border="1" style="margin-top: 20px; border-collapse: collapse; width: 100%;">
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>SKU/Part Number</th>
+                <th>Description</th>
+                <th>Stock Quantity</th>
+                <th>Cost Price</th>
+                <th>Distry Price</th>
+                <th>Reseller Price</th>
+                <th>MSRP</th>
+                <th>Date Added</th>
+                <th>Last Updated</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <!-- 🚨 FIXED: Removed the extra duplicate <thead> tag here -->
+        <tbody>
+            {% for product in products %}
+            <tr class="clickable-row">
+                <td><a href="{% url 'product_update' product.pk %}" style="text-decoration: none;"><strong>{{ product.item_no }}</strong></a></td>
+                <td><a href="{% url 'product_update' product.pk %}" style="text-decoration: none;">{{ product.sku }}</a></td>
+                <td><a href="{% url 'product_update' product.pk %}" style="text-decoration: none;">{{ product.description }}</a></td>
+                <td><a href="{% url 'product_update' product.pk %}" style="text-decoration: none;">{{ product.stock_quantity }}</a></td>
+                <td><a href="{% url 'product_update' product.pk %}" style="text-decoration: none;">{{ product.cost_price }}</a></td>
+                <td><a href="{% url 'product_update' product.pk %}" style="text-decoration: none;">{{ product.distry_price }}</a></td>
+                <td><a href="{% url 'product_update' product.pk %}" style="text-decoration: none;">{{ product.reseller_price }}</a></td>
+                <td><a href="{% url 'product_update' product.pk %}" style="text-decoration: none;">{{ product.MSRP }}</a></td>
+                <td><a href="{% url 'product_update' product.pk %}" style="text-decoration: none;">{{ product.dated_added }}</a></td>
+                <td><a href="{% url 'product_update' product.pk %}" style="text-decoration: none;">{{ product.last_updated }}</a></td>
+                <td>
+                    <a href="{% url 'product_delete' product.pk %}" style="color:red;">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="11" style="text-align: center; padding: 10px;">No product found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
