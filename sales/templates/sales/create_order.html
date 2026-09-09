@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Order</title>
+    <!--<link rel="stylesheet" href="{% static 'sales/style.css' %}">> -->
+</head>
+<body>
+    <h2>Create Sales Order</h2>
+    <br>
+    <a href="{% url 'home' %}">Home</a>
+    <br>
+    <a href="{% url 'sales:order_list' %}">Order List</a>
+    <br>
+    <form method="POST">
+        {% csrf_token %}
+        <h3>Order Context</h3>
+        {{ order_form.as_p }}
+        
+        <h3>Products Selection</h3>
+        {{ formset.management_form }}
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for form in formset %}
+                    <tr>
+                        <td>{{ form.product }}</td>
+                        <td>{{ form.quantity }}</td>
+                        <td>{{ form.unit_price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <button type="submit">Submit Order</button>
+    </form>
+</body>
+</html>
+
+

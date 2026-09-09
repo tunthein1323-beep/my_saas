@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Detail</title>
+</head>
+<body>
+    <h2>SO-{{ order.id|stringformat:"05d"}} Details</h2>
+    <p><strong>Customer:</strong> {{ order.customer.first_name }} {{ order.customer.last_name }} </p>
+    <p><strong>Company:</strong> {{ order.customer.company.c_name }}</p>
+    <p><strong>Price Tier:</strong> {{ order.get_price_tier_display }}</p>
+    
+    <h3>Line Items</h3>
+    <ul>
+        {% for item in order.items.all %}
+            <li>{{ item.product.item_no }} — {{ item.quantity }} units @ ${{ item.unit_price }}</li>
+        {% endfor %}
+    </ul>
+    <h3>Total Order Value: ${{ order.total_amount }}</h3>
+    
+    <a href="{% url 'sales:order_list' %}">Order List</a>
+    <br>
+    <br>
+
+    <a href="{% url 'sales:create_order' %}">Place a new order</a>
+</body>
+</html>
