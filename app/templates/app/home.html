@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Saas</title>
-</head>
-<body>
-    Welcome to my frist Web SAAS.
+{% extends 'app/base.html' %}
 
-    <a href="{% url 'company_list' %}">Company list</a>
-    <br>
-    <a href="{% url 'product_list' %}">Product list</a>
-    <br>
-    <a href="{% url 'sales:create_order' %}">Sales Order</a>
-</body>
-</html>
+{% block title %}SAAS{% endblock %}
+
+{% block content %}
+    <h3>Welcome Dashboard</h3>
+    <p>This default text only shows on the main home screen.</p>
+{% endblock %}

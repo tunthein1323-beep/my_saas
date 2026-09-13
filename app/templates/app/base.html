@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'app/home.css' %}">
+    <title>{% block title %}SAAS{% endblock %}</title>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <h1>Dragonrider SAAS</h1>
+    <hr>
+    
+    <!-- 1. The Navbar is static here, ensuring it appears on every subpage -->
+    <nav class="navbar">
+        <div class="nav-logo">
+            {% block logo %}MyApp{% endblock %}
+        </div>
+        <ul class="nav-links">
+          <li style="color: #d1d5db;">Search: <input type="search"></li>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'company_list' %}">Customer</a></li>
+          <li><a href="{% url 'product_list' %}">Inventory</a></li>
+          <li><a href="{% url 'sales:create_order' %}">Sales Order</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}      
+        {% endblock %}
+        </main>
+        
+</body>
+</html>

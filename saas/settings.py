@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://eternal-avoid-customers-nyc.trycloudflare.com'
+]
+
 
 # Application definition
 

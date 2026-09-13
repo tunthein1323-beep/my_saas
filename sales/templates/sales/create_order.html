@@ -1,48 +1,123 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Sales Order{% endblock %}
+{% block logo %}Create Sales Order{% endblock %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales Order</title>
-    <!--<link rel="stylesheet" href="{% static 'sales/style.css' %}">> -->
-</head>
-<body>
-    <h2>Create Sales Order</h2>
-    <br>
-    <a href="{% url 'home' %}">Home</a>
-    <br>
-    <a href="{% url 'sales:order_list' %}">Order List</a>
-    <br>
-    <form method="POST">
-        {% csrf_token %}
-        <h3>Order Context</h3>
-        {{ order_form.as_p }}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/product_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    
+    <!-- Customer Input Pick -->
+    <label>Customer:</label>
+    <select name="customer" required>
+        <option value="">-- Choose Customer --</option>
+        {% for customer in customer_list %}
+            <option value="{{ customer.id }}">{{ customer.first_name }} {{ customer.last_name }}</option>
+        {% endfor %}
+    </select>
+    <br><br>
+
+    <hr>
+    <h3>Order Items</h3>
+
+    <!-- Product Input Table -->
+    <table id="order_items_table">
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Part Number</th>
+                <th>Description</th>
+                <th>Unit Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- The first row serves as our template block -->
+            <tr class="product-row">
+                <td>
+                    <!-- Removed 'required' so users don't have to fill out all 8 rows -->
+                    <select class="product-dropdown" name="product[]">
+                        <option value="">-- Select Product --</option>
+                        {% for item in inventory_list %}
+                            <option value="{{ item.id }}">{{ item.item_no }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <input type="text" class="part-number" name="part_number[]" readonly placeholder="Auto-populated">
+                </td>
+                <td>
+                    <textarea class="description" name="description[]" readonly placeholder="Auto-populated"></textarea>
+                </td>
+                <td>
+                    <input type="number" class="unit-price" name="unit_price[]" readonly placeholder="0.00" step="0.01">
+                </td>
+                <td>
+                    <!-- Removed 'required' here too -->
+                    <input type="number" name="quantity[]" min="1" value="1">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br><br>
+    <button type="submit">Place Sales Order</button>
+</form>
+
+<script>
+// RUNS AUTOMATICALLY ON PAGE LOAD TO CREATE 8 ROWS
+document.addEventListener('DOMContentLoaded', function() {
+    const tableBody = document.querySelector('#order_items_table tbody');
+    const firstRow = tableBody.querySelector('.product-row');
+
+    // Loop runs 7 times because 1 row already exists in the HTML layout
+    for (let i = 0; i < 7; i++) {
+        const newRow = firstRow.cloneNode(true);
         
-        <h3>Products Selection</h3>
-        {{ formset.management_form }}
-        <table>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for form in formset %}
-                    <tr>
-                        <td>{{ form.product }}</td>
-                        <td>{{ form.quantity }}</td>
-                        <td>{{ form.unit_price }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <br>
-        <button type="submit">Submit Order</button>
-    </form>
-</body>
-</html>
+        // Ensure values in the cloned rows are completely empty
+        newRow.querySelector('.product-dropdown').value = '';
+        newRow.querySelector('.part-number').value = '';
+        newRow.querySelector('.description').value = '';
+        newRow.querySelector('.unit-price').value = '';
+        newRow.querySelector('input[name="quantity[]"]').value = '1';
+        
+        tableBody.appendChild(newRow);
+    }
+});
 
+// AUTO-POPULATE DATA FOR THE DROPDOWNS (EVENT DELEGATION)
+document.querySelector('#order_items_table').addEventListener('change', function(e) {
+    if (e.target && e.target.classList.contains('product-dropdown')) {
+        const dropdown = e.target;
+        const currentRow = dropdown.closest('tr');
+        const productId = dropdown.value;
+        
+        if (!productId) {
+            currentRow.querySelector('.part-number').value = '';
+            currentRow.querySelector('.description').value = '';
+            currentRow.querySelector('.unit-price').value = '';
+            return;
+        }
 
+        // Fetch API matching your URL structure
+        fetch(`/sales/api/product/${productId}/`) 
+            .then(response => {
+                if (!response.ok) throw new Error('Not found');
+                return response.json();
+            })
+            .then(data => {
+                currentRow.querySelector('.part-number').value = data.part_number;
+                currentRow.querySelector('.description').value = data.description;
+                currentRow.querySelector('.unit-price').value = data.unit_price;
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }
+});
+</script>
+{% endblock %}

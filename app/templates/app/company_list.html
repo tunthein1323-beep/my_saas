@@ -1,43 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Company List</title>
-</head>
-<body>
-    <h1>Company List</h1>
-    <a href="{% url 'company_create' %}" style="color: green;">Add New Company</a>
-    <a href="{% url 'home' %}" style="color: blueviolet; margin: 20px;">Home</a>
-    
-    <!-- Added a temporary border so you can see if the table grid layout works -->
-    <table border="1" style="margin-top: 20px; border-collapse: collapse; width: 100%;">
-        <thead>
-            <tr>
-                <th>Company Name</th>
-                <th>Phone Number</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <!-- 🚨 FIXED: Removed the extra duplicate <thead> tag here -->
-        <tbody>
-            {% for company in companies %}
-            <tr class="clickable-row">
-                <td><a href="{% url 'customer_list' company.pk %}" style="text-decoration: none;"><strong>{{ company.c_name }}</strong></a></td>
-                <td><a href="{% url 'customer_list' company.pk %}" style="text-decoration: none;">{{ company.c_phone }}</a></td>
-                <td><a href="{% url 'customer_list' company.pk %}" style="text-decoration: none;">{{ company.c_email }}</a></td>
-                <td><a href="{% url 'customer_list' company.pk %}" style="text-decoration: none;">{{ company.address }}</a></td>
-                <td>
-                    <a href="{% url 'company_update' company.pk %}" style="color:lightseagreen;">Edit</a> | 
-                    <a href="{% url 'company_delete' company.pk %}" style="color:red;">Delete</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="5" style="text-align: center; padding: 10px;">No companies found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+{% extends 'app/base.html' %}
+
+{% block title %}Company List{% endblock %}
+
+{% block logo %}Company List{% endblock %}
+
+{% block content %}
+<br>
+<a href="{% url 'company_create' %}" style="color: green;">Add New Company</a>
+
+<!-- Added a temporary border so you can see if the table grid layout works -->
+<table border="1" style="margin-top: 20px; border-collapse: collapse; width: 100%;">
+    <thead>
+        <tr>
+            <th>Company Name</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <!-- 🚨 FIXED: Removed the extra duplicate <thead> tag here -->
+    <tbody>
+        {% for company in companies %}
+        <tr class="clickable-row">
+            <td><a href="{% url 'customer_list' company.pk %}" style="text-decoration: none;"><strong>{{ company.c_name }}</strong></a></td>
+            <td><a href="{% url 'customer_list' company.pk %}" style="text-decoration: none;">{{ company.c_phone }}</a></td>
+            <td><a href="{% url 'customer_list' company.pk %}" style="text-decoration: none;">{{ company.c_email }}</a></td>
+            <td><a href="{% url 'customer_list' company.pk %}" style="text-decoration: none;">{{ company.address }}</a></td>
+            <td>
+                <a href="{% url 'company_update' company.pk %}" style="color:lightseagreen;">Edit</a> | 
+                <a href="{% url 'company_delete' company.pk %}" style="color:red;">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" style="text-align: center; padding: 10px;">No companies found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

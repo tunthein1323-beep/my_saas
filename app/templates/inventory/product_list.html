@@ -1,18 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Inventory List</title>
-    <style>
-        .clickable-row a:hover { background-color: lightblue; cursor: pointer};
-    </style>
-</head>
-<body>
-    <h1>Inventory List</h1>
+{% extends 'app/base.html' %}
+
+{% block title %}Inventory List{% endblock %}
+
+{% block logo %}Inventory List{% endblock %}
+{% load static %}
+
+<!-- ⚡ Inject your second CSS file here -->
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/product_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<br>
     <a href="{% url 'product_create' %}" style="color: green;">Add New Product</a>
     <a href="{% url 'home' %}" style="color: blueviolet; margin: 20px;">Home</a>
     
     <!-- Added a temporary border so you can see if the table grid layout works -->
-    <table border="1" style="margin-top: 20px; border-collapse: collapse; width: 100%;">
+    <table>
         <thead>
             <tr>
                 <th>Item Name</th>
@@ -53,5 +57,4 @@
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}
