@@ -10,12 +10,14 @@
 {% endblock %}
 
 {% block content %}
+<br>
+
 <form method="POST">
     {% csrf_token %}
     
     <!-- Customer Input Pick -->
     <label>Customer:</label>
-    <select name="customer" required>
+    <select name="customer_id" required>
         <option value="">-- Choose Customer --</option>
         {% for customer in customer_list %}
             <option value="{{ customer.id }}">{{ customer.first_name }} {{ customer.last_name }}</option>
@@ -35,6 +37,7 @@
                 <th>Description</th>
                 <th>Unit Price</th>
                 <th>Quantity</th>
+                <th>Amount</th>
             </tr>
         </thead>
         <tbody>
@@ -42,7 +45,7 @@
             <tr class="product-row">
                 <td>
                     <!-- Removed 'required' so users don't have to fill out all 8 rows -->
-                    <select class="product-dropdown" name="product[]">
+                    <select class="product-dropdown" name="product_ids">
                         <option value="">-- Select Product --</option>
                         {% for item in inventory_list %}
                             <option value="{{ item.id }}">{{ item.item_no }}</option>
@@ -60,7 +63,11 @@
                 </td>
                 <td>
                     <!-- Removed 'required' here too -->
-                    <input type="number" name="quantity[]" min="1" value="1">
+                    <input type="number" name="quantities" min="1" value="1">
+                </td>
+                <td>
+                    <!-- Removed 'required' here too -->
+                    <input type="number" name="amount" placeholder="0.00" step="0.01">
                 </td>
             </tr>
         </tbody>
@@ -85,7 +92,9 @@ document.addEventListener('DOMContentLoaded', function() {
         newRow.querySelector('.part-number').value = '';
         newRow.querySelector('.description').value = '';
         newRow.querySelector('.unit-price').value = '';
-        newRow.querySelector('input[name="quantity[]"]').value = '1';
+        // Inside your DOMContentLoaded loop, update this line:
+        newRow.querySelector('input[name="quantities"]').value = '1';
+
         
         tableBody.appendChild(newRow);
     }

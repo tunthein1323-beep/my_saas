@@ -5,16 +5,17 @@
 
 {% block content %}
 <br>
-<a href="{% url 'customer_create' company.pk %}" style="color: green;">Add New Company</a>
+<a href="{% url 'customer_create' company.pk %}" style="color: green;">Add New Employee</a>
 <a href="{% url 'company_list' %}" style="color: blueviolet; margin: 20px;">Back</a>
 
 <table border="1" style="margin-top: 20px; border-collapse: collapse; width: 100%;">
     <thead>
         <tr>
-            <th>Company Name</th>
+            <th>First Name</th>
+            <th>Last Name</th>
             <th>Phone Number</th>
             <th>Email</th>
-            <th>Address</th>
+            <th>Position</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -23,9 +24,10 @@
         
         <tr>
             <td><a href="{% url 'customer_update' customer.pk %}"><strong>{{ customer.first_name }}</strong></a></td>
+            <td><a href="{% url 'customer_update' customer.pk %}"><strong>{{ customer.last_name }}</strong></a></td>
             <td>{{ customer.phone }}</td>
             <td>{{ customer.email }}</td>
-            <td>{{ customer.address }}</td>
+            <td>{{ customer.position }}</td>
             <td>
                 <a href="{% url 'customer_update' customer.pk %}">Edit</a> | 
                 <a href="{% url 'customer_delete' customer.pk %}">Delete</a>

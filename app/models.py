@@ -15,7 +15,7 @@ class Customer(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='customers')
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=9, verbose_name="123456789")
+    phone = models.IntegerField(max_length=9, verbose_name="123456789")
     email = models.EmailField()    
     position = models.CharField(max_length=50, verbose_name="manager")
 
