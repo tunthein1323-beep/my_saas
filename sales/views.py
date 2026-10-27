@@ -129,3 +129,10 @@ def order_detail(request, order_id):
     """
     from django.http import HttpResponse
     return HttpResponse(f"Viewing order details for ID: {order_id}")
+
+def order_delete(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    if request.method == 'POST':
+        order.delete()
+        return redirect('sales:sales_orders_list')
+    return render(request, 'sales/order_delete.html', {'order': order})

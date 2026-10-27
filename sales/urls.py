@@ -15,4 +15,6 @@ urlpatterns = [
     
     # 3. Individual Order Detail view
     path('order/<int:order_id>/', views.order_detail, name='order_detail'),
+
+    path('order_delete/<int:pk>/', views.order_delete, name='order_delete'),
 ]

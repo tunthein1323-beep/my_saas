@@ -27,6 +27,7 @@
                 <th>Subtotal</th>
                 <th>Tax (7.25%)</th>
                 <th>Total Amount</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -54,6 +55,7 @@
                 <td>${{ order.sub_total }}</td>
                 <td>${{ order.tax }}</td>
                 <td class="total-bold">${{ order.total }}</td>
+                <td><a href="{% url 'sales:order_delete' order.pk %}">Delete</a></td>
             </tr>
             {% empty %}
             <tr>
